@@ -66,6 +66,8 @@ function qr(seed) {
 const S = { user: null, orders: SEED_ORDERS.map(o => ({ ...o })), qty: 1, co: null, justPaid: null, chat: false, chatStage: "intro", howTab: "iphone", devBrand: "All", seg: "", esim: {}, howStep: 0, howAuto: true, heroIdx: 0, menu: false, ver: 1 };
 try { const v = new URLSearchParams(location.search).get("v") || localStorage.getItem("esim-ver"); S.ver = v === "2" ? 2 : 1; } catch (e) {}
 const V2 = () => S.ver === 2;
+/* Version 2: destination of the photo card at the start of the first home section */
+const FEATURED = "US";
 const REDUCED = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
 const orderById = id => S.orders.find(o => o.id.toUpperCase() === String(id).toUpperCase());
 const orderPlan = o => planById(o.planId);
@@ -101,19 +103,21 @@ function searchSubmit(box) {
    photo=true puts the destination photo behind the card with a fade under the details. */
 function planCard2(p, photo) {
   const cover = p.countries.length === 1 ? `${COUNTRIES[p.countries[0]][2]} network` : `${p.countries.length} countries`;
-  return `<article class="plan plan2${photo ? " plan-photo" : ""}">${photo ? `<img class="plan-bg" src="${CARD_PHOTOS[p.icon]}" alt="">` : ""}
+  const img = photo && CARD_PHOTOS[p.icon];
+  return `<article class="plan plan2${photo ? " plan-photo" : ""}">${img ? `<img class="plan-bg" src="${img}" alt="">` : ""}
     <div class="plan2-body${photo ? " on-dark" : ""}">
+      <div class="plan2-top">${flag(p.icon, 32)}<span class="plan-tags">${p.onSale ? '<span class="tag tag-sale">On sale</span>' : ""}${p.popular ? '<span class="tag tag-line">Popular</span>' : ""}</span></div>
       <div class="plan2-row">
-        <h3 class="plan2-name">${flag(p.icon, 30)}<a ${go_("/plan/" + p.id)}>${esc(p.title)}</a></h3>
+        <h3 class="plan2-name"><a ${go_("/plan/" + p.id)}>${esc(p.title)}</a></h3>
         <span class="plan2-gb">${p.dataGB} GB</span>
         <span class="plan2-price">${p.compareAt ? `<s>$${p.compareAt}</s>` : ""}$${p.price}</span>
       </div>
-      <p class="plan2-meta">${validity(p.days)}, ${cover}${p.onSale ? ' <span class="tag tag-sale">On sale</span>' : ""}</p>
+      <p class="plan2-meta">${validity(p.days)}, ${cover}</p>
       <div class="plan2-actions"><a class="link link-sm" ${go_("/plan/" + p.id)}>Countries &amp; info</a><a class="btn btn-primary btn-sm" ${go_("/checkout/" + p.id)}>Buy now</a></div>
     </div></article>`;
 }
 function planCard(p, photo) {
-  if (V2()) return planCard2(p, photo === true && !!CARD_PHOTOS[p.icon]);
+  if (V2()) return planCard2(p, photo === true);
   const cover = p.countries.length === 1 ? `<li>${I.signal}${COUNTRIES[p.countries[0]][2]} network</li>` : `<li>${I.globe}${p.countries.length} countries</li>`;
   return `<article class="plan">
     <div class="plan-body">
@@ -260,8 +264,15 @@ V[""] = () => {
   const sec = (s, si) => {
     const list = PLANS.filter(p => p.live && p.siteLocations.includes(s.key)).slice(0, 4);
     /* version 2: no carousel on mobile, every card is listed and View all opens the catalog */
-    if (v2) return `<section class="home-section"><div class="section-head"><h3>${s.title}</h3><a class="link" ${go_(s.all)}>View all ${I.arrow}</a></div><div class="grid-4">${list.map((p, i) => planCard(p, si === 0 && i === 0)).join("")}</div>
+    if (v2) {
+      /* plans placed in this section in the CMS first, then more plans that match the section, up to 8 */
+      const match = { sale: p => p.onSale, year: p => p.days >= 365, europe: p => p.region === "europe", usa: p => p.region === "usa", world: p => !["europe", "usa"].includes(p.region) }[s.key] || (() => false);
+      let more = PLANS.filter(p => p.live && p.siteLocations.includes(s.key));
+      more = [...more, ...PLANS.filter(p => p.live && match(p) && !more.includes(p))].slice(0, 8);
+      if (si === 0) more.sort((a, b) => (b.icon === FEATURED) - (a.icon === FEATURED));
+      return `<section class="home-section"><div class="section-head"><h3>${s.title}</h3><a class="link" ${go_(s.all)}>View all ${I.arrow}</a></div><div class="grid-4">${more.map((p, i) => planCard(p, si === 0 && i === 0 && p.icon === FEATURED)).join("")}</div>
       <a class="btn btn-secondary btn-block m-only" ${go_(s.all)}>View all</a></section>`;
+    }
     return `<section class="home-section"><div class="section-head"><h3>${s.title}</h3><a class="link" ${go_(s.all)}>View all ${I.arrow}</a></div><div class="grid-4 carousel" data-carousel>${list.map(p => planCard(p)).join("")}</div>
       <div class="car-nav"><button type="button" data-act="car" data-d="-1" aria-label="Previous plans" disabled>${I.arrow}</button><button type="button" data-act="car" data-d="1" aria-label="Next plans">${I.arrow}</button></div>
       <a class="btn btn-secondary btn-block m-only" ${go_(s.all)}>View all</a></section>`;

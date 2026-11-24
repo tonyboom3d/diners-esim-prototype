@@ -14,7 +14,7 @@ Open `index.html` in a browser, or enable GitHub Pages for this repository (Sett
 
 The page has two design versions, switched with the Version 1 / Version 2 control at the bottom left. Open `?v=2` to start on version 2.
 
-Version 2 changes the home page and plan cards: compact cards (name, data and price on one line), a photo card for Europe in the first section, the search under the notice strip, buttons for the "Already have an eSIM?" links, and on mobile all cards listed without a carousel.
+Version 2 changes the home page and plan cards: compact cards (name, data and price on one line), a photo card for the USA at the start of the first section, the search under the notice strip, buttons for the "Already have an eSIM?" links, and on mobile all cards listed without a carousel.
 
 ## Pages
 
@@ -28,7 +28,7 @@ Home, plan list with filters and multi-country search, plan details, checkout (d
 | `src/data.js` | Sample catalog in the CMS field structure (plans, countries, top-ups, orders, devices, FAQs) |
 | `src/styles.css` | Styles, based on the DCI Website Guidelines |
 | `src/map.js` | World map outline for the coverage section |
-| `src/flags/`, `src/fonts/`, `src/photos/`, `src/cards/` | Assets embedded at build time (`cards/europe.jpg` is the version 2 Europe card photo) |
+| `src/flags/`, `src/fonts/`, `src/photos/`, `src/cards/` | Assets embedded at build time (`cards/us.jpg`, when added, is the photo on the version 2 USA card) |
 
 ## Build
 

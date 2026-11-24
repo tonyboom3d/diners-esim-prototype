@@ -779,3 +779,20 @@ body{min-width:0}
 .plan-photo{min-height:200px}
 .plan2-actions{flex-wrap:wrap}
 .plan2-actions .btn{margin-left:auto}
+
+/* ---------- Version 2, round 2: tag top right, data in the centre, larger figures ---------- */
+.plan2-top{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:32px}
+.plan2-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px}
+.plan2-name{font:700 24px/1.15 var(--sans);overflow-wrap:break-word}
+.plan2-gb{justify-self:center;font-size:21px;padding:7px 12px;margin:0}
+.plan2-price{justify-self:end;font-size:22px;margin:0}
+.plan2-price s{font-size:14px}
+.plan-photo{min-height:250px}
+.plan-photo .plan2-top{margin-bottom:auto}
+.plan-photo .tag-line{background:rgba(255,255,255,.9)}
+@media (min-width:1024px) and (max-width:1279px){.v2 .grid-4{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){
+  .plan2-name{font-size:22px}
+  .plan2-gb{font-size:19px}
+  .plan2-price{font-size:20px}
+}
