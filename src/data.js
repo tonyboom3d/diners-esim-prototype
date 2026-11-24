@@ -190,3 +190,5 @@ const FAQS = [
     ["Do you offer discount codes?", "If you have a coupon code, enter it on the details step before payment."]
   ]]
 ];
+
+/* Version 2: photos behind featured plan cards, keyed by COUNTRY ICON (embedded at build time from src/cards) */

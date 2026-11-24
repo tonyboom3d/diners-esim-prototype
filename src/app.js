@@ -63,7 +63,9 @@ function qr(seed) {
 }
 
 /* ---------- State ---------- */
-const S = { user: null, orders: SEED_ORDERS.map(o => ({ ...o })), qty: 1, co: null, justPaid: null, chat: false, chatStage: "intro", howTab: "iphone", devBrand: "All", seg: "", esim: {}, howStep: 0, howAuto: true, heroIdx: 0, menu: false };
+const S = { user: null, orders: SEED_ORDERS.map(o => ({ ...o })), qty: 1, co: null, justPaid: null, chat: false, chatStage: "intro", howTab: "iphone", devBrand: "All", seg: "", esim: {}, howStep: 0, howAuto: true, heroIdx: 0, menu: false, ver: 1 };
+try { const v = new URLSearchParams(location.search).get("v") || localStorage.getItem("esim-ver"); S.ver = v === "2" ? 2 : 1; } catch (e) {}
+const V2 = () => S.ver === 2;
 const REDUCED = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
 const orderById = id => S.orders.find(o => o.id.toUpperCase() === String(id).toUpperCase());
 const orderPlan = o => planById(o.planId);
@@ -95,7 +97,23 @@ function searchSubmit(box) {
   const picks = getPicks(box);
   go(picks.length ? "/plans?country=" + picks.join(",") : "/plans");
 }
-function planCard(p) {
+/* Version 2 card: name, data and price on one line; Countries & info left, Buy now right under the price.
+   photo=true puts the destination photo behind the card with a fade under the details. */
+function planCard2(p, photo) {
+  const cover = p.countries.length === 1 ? `${COUNTRIES[p.countries[0]][2]} network` : `${p.countries.length} countries`;
+  return `<article class="plan plan2${photo ? " plan-photo" : ""}">${photo ? `<img class="plan-bg" src="${CARD_PHOTOS[p.icon]}" alt="">` : ""}
+    <div class="plan2-body${photo ? " on-dark" : ""}">
+      <div class="plan2-row">
+        <h3 class="plan2-name">${flag(p.icon, 30)}<a ${go_("/plan/" + p.id)}>${esc(p.title)}</a></h3>
+        <span class="plan2-gb">${p.dataGB} GB</span>
+        <span class="plan2-price">${p.compareAt ? `<s>$${p.compareAt}</s>` : ""}$${p.price}</span>
+      </div>
+      <p class="plan2-meta">${validity(p.days)}, ${cover}${p.onSale ? ' <span class="tag tag-sale">On sale</span>' : ""}</p>
+      <div class="plan2-actions"><a class="link link-sm" ${go_("/plan/" + p.id)}>Countries &amp; info</a><a class="btn btn-primary btn-sm" ${go_("/checkout/" + p.id)}>Buy now</a></div>
+    </div></article>`;
+}
+function planCard(p, photo) {
+  if (V2()) return planCard2(p, photo === true && !!CARD_PHOTOS[p.icon]);
   const cover = p.countries.length === 1 ? `<li>${I.signal}${COUNTRIES[p.countries[0]][2]} network</li>` : `<li>${I.globe}${p.countries.length} countries</li>`;
   return `<article class="plan">
     <div class="plan-body">
@@ -238,9 +256,13 @@ function howHome() {
 }
 
 V[""] = () => {
-  const sec = s => {
+  const v2 = V2();
+  const sec = (s, si) => {
     const list = PLANS.filter(p => p.live && p.siteLocations.includes(s.key)).slice(0, 4);
-    return `<section class="home-section"><div class="section-head"><h3>${s.title}</h3><a class="link" ${go_(s.all)}>View all ${I.arrow}</a></div><div class="grid-4 carousel" data-carousel>${list.map(planCard).join("")}</div>
+    /* version 2: no carousel on mobile, every card is listed and View all opens the catalog */
+    if (v2) return `<section class="home-section"><div class="section-head"><h3>${s.title}</h3><a class="link" ${go_(s.all)}>View all ${I.arrow}</a></div><div class="grid-4">${list.map((p, i) => planCard(p, si === 0 && i === 0)).join("")}</div>
+      <a class="btn btn-secondary btn-block m-only" ${go_(s.all)}>View all</a></section>`;
+    return `<section class="home-section"><div class="section-head"><h3>${s.title}</h3><a class="link" ${go_(s.all)}>View all ${I.arrow}</a></div><div class="grid-4 carousel" data-carousel>${list.map(p => planCard(p)).join("")}</div>
       <div class="car-nav"><button type="button" data-act="car" data-d="-1" aria-label="Previous plans" disabled>${I.arrow}</button><button type="button" data-act="car" data-d="1" aria-label="Next plans">${I.arrow}</button></div>
       <a class="btn btn-secondary btn-block m-only" ${go_(s.all)}>View all</a></section>`;
   };
@@ -249,16 +271,18 @@ V[""] = () => {
     <div class="hero-copy stack-lg">
       <div class="stack"><h1>Stay connected wherever you travel</h1>
       <p class="big measure">Prepaid travel data for Diners Club cardmembers. Choose a destination, pay with your Diners Club card and install your eSIM by scanning a QR code.</p></div>
-      ${searchBar()}
+      ${v2 ? "" : searchBar()}
       <div class="quick"><span class="small">Popular regions</span>${REGIONS.map(r => `<a class="chip" ${go_("/plans?region=" + r.key)}>${r.label}</a>`).join("")}</div>
-      <div class="quick" style="gap:24px"><span class="small">Already have an eSIM?</span><a class="link" ${go_("/balance")}>Check balance ${I.arrow}</a><a class="link" ${go_("/topup")}>Top up ${I.arrow}</a><a class="link" ${go_("/devices")}>Check your device ${I.arrow}</a></div>
+      ${v2 ? `<div class="quick quick-btns"><span class="small">Already have an eSIM?</span><a class="btn btn-secondary btn-sm" ${go_("/balance")}>Check balance</a><a class="btn btn-secondary btn-sm" ${go_("/topup")}>Top up</a><a class="btn btn-secondary btn-sm" ${go_("/devices")}>Check your device</a></div>`
+      : `<div class="quick" style="gap:24px"><span class="small">Already have an eSIM?</span><a class="link" ${go_("/balance")}>Check balance ${I.arrow}</a><a class="link" ${go_("/topup")}>Top up ${I.arrow}</a><a class="link" ${go_("/devices")}>Check your device ${I.arrow}</a></div>`}
     </div>
     <div></div>
   </div></section>
   <div class="notice"><span>Travelling often? 1-year plans are now available.</span><a class="link" ${go_("/plans?validity=365")}>See 1-year plans ${I.arrow}</a></div>
+  ${v2 ? `<section class="search-band"><div class="wrap"><div class="search-band-in"><p class="strong">Find a plan for your trip</p>${searchBar()}</div></div></section>` : ""}
   <div class="wrap">${SECTIONS.slice(0, 2).map(sec).join("")}</div>
   ${coverage()}
-  <div class="wrap">${SECTIONS.slice(2).map(sec).join("")}</div>
+  <div class="wrap">${SECTIONS.slice(2).map((s, i) => sec(s, i + 2)).join("")}</div>
   ${howHome()}`;
 };
 
@@ -774,6 +798,20 @@ document.addEventListener("scroll", e => {
 /* Hero slideshow: cross-fade to the next photo every 6 seconds */
 setInterval(() => { const imgs = $$(".hero-media img"); if (REDUCED || document.hidden || imgs.length < 2) return; S.heroIdx = (S.heroIdx + 1) % imgs.length; imgs.forEach((im, i) => im.classList.toggle("on", i === S.heroIdx)); }, 6000);
 
-renderFooter(); renderChat();
+function renderVer() {
+  document.documentElement.classList.toggle("v2", V2());
+  let el = $("#ver-switch");
+  if (!el) { el = document.createElement("div"); el.id = "ver-switch"; el.className = "ver-switch"; el.setAttribute("role", "group"); el.setAttribute("aria-label", "Design version"); document.body.appendChild(el); }
+  el.innerHTML = [1, 2].map(n => `<button type="button" data-act="setVer" data-v="${n}" aria-pressed="${S.ver === n}">Version ${n}</button>`).join("");
+}
+A.setVer = el => {
+  const n = +el.dataset.v; if (n === S.ver) return;
+  S.ver = n; const y = window.scrollY;
+  try { localStorage.setItem("esim-ver", String(n)); } catch (e) {}
+  try { const u = new URL(location.href); if (n === 2) u.searchParams.set("v", "2"); else u.searchParams.delete("v"); history.replaceState(null, "", u.pathname + u.search + u.hash); } catch (e) {}
+  renderVer(); render(cur); window.scrollTo(0, y);
+};
+
+renderVer(); renderFooter(); renderChat();
 cur = (location.hash || "").slice(1) || "/";
 render(cur);

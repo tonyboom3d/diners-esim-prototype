@@ -22,6 +22,9 @@ def photo(p):
     buf = io.BytesIO(); im.save(buf, 'JPEG', quality=80, optimize=True, progressive=True)
     return 'data:image/jpeg;base64,' + base64.b64encode(buf.getvalue()).decode()
 hero_js = '/* Hero slideshow photos (embedded at build time from src/photos) */\nconst HERO_PHOTOS = [' + ','.join('"%s"' % photo(p) for p in sorted((B / 'photos').glob('*.jpg'))) + '];\n'
+def card_photo(p):
+    return 'data:image/jpeg;base64,' + base64.b64encode(p.read_bytes()).decode()
+cards_js = 'const CARD_PHOTOS = {' + ','.join('%s:"%s"' % (p.stem.upper() if p.stem.lower() != 'europe' else 'EU', card_photo(p)) for p in sorted((B / 'cards').glob('*.jpg'))) + '};'
 flags_js = 'const FLAGS = {' + ','.join(f'{k}:"{v}"' for k, v in flags.items()) + '};'
 
 fonts = f'''@font-face{{font-family:"Sweet Sans Pro";src:url(data:font/otf;base64,{b64(B / "fonts/SweetSansPro-Regular.otf")}) format("opentype");font-weight:400;font-style:normal;font-display:swap}}
@@ -48,6 +51,7 @@ html = f'''<!DOCTYPE html>
 {flags_js}
 {(B / 'map.js').read_text()}
 {hero_js}
+{cards_js}
 {data}
 {(B / 'app.js').read_text()}
 </script>

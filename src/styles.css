@@ -711,3 +711,71 @@ body{min-width:0}
 .search-list .btn-primary{background:var(--twilight);border-color:var(--twilight);color:var(--white)}
 .search-list .btn-primary:hover{background:#0A2E5C}
 @media (max-width:760px){.filters>a.link{border:0;padding:0;border-radius:0}}
+
+
+/* =====================================================================
+   Version 2
+   ===================================================================== */
+.ver-switch{position:fixed;left:16px;bottom:16px;z-index:61;display:flex;padding:4px;gap:2px;background:var(--white);border:1px solid var(--line-strong);border-radius:999px;box-shadow:0 6px 20px rgba(4,30,66,.18)}
+.ver-switch button{border:0;background:none;color:var(--twilight);font:700 12px/1 var(--sans);padding:9px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.ver-switch button[aria-pressed="true"]{background:var(--twilight);color:var(--white)}
+
+/* compact plan card */
+.plan2{position:relative}
+.plan2-body{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;padding:18px 18px 16px;flex:1}
+.plan2-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:14px}
+.plan2-name{display:flex;align-items:center;gap:10px;margin:0;font:700 20px/1.2 var(--sans);min-width:0}
+.plan2-name .flag{flex:none}
+.plan2-name a{color:inherit;text-decoration:none}
+.plan2-name a:hover{text-decoration:underline;text-underline-offset:3px}
+.plan2-gb{font:400 18px/1 var(--sans);white-space:nowrap;padding:6px 10px;border-radius:4px;background:var(--sand)}
+.plan2-price{font:400 18px/1 var(--sans);white-space:nowrap;text-align:right}
+.plan2-price s{display:block;font-size:13px;color:var(--muted);margin-bottom:3px}
+.plan2-meta{margin:0;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.plan2-meta .tag{padding:4px 6px;font-size:10px}
+.plan2-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
+
+/* featured card: destination photo with a fade under the details */
+.plan-photo{border:0;background:var(--twilight);min-height:230px}
+.plan-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%}
+.plan-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,30,66,0) 0%,rgba(4,30,66,.2) 22%,rgba(4,30,66,.82) 50%,rgba(4,30,66,.95) 70%,var(--twilight) 100%)}
+.plan-photo .plan2-body{justify-content:flex-end;color:var(--white)}
+.plan-photo .plan2-row{margin-top:auto}
+.plan-photo .plan2-gb{background:rgba(255,255,255,.16);color:var(--white)}
+.plan-photo .plan2-meta,.plan-photo .plan2-price s{color:rgba(255,255,255,.78)}
+.plan-photo .plan2-actions{border-top-color:rgba(255,255,255,.22)}
+.v2 .grid-4>.plan-photo:only-child{min-height:260px}
+
+/* search under the notice strip */
+.search-band{position:relative;z-index:6;padding:32px 0 8px}
+.search-band-in{max-width:760px;margin-inline:auto;display:grid;gap:10px}
+.search-band .search{max-width:none}
+.search-band .search-field{border-color:var(--line-strong)}
+
+/* "Already have an eSIM?" as buttons */
+.quick-btns{gap:10px}
+.quick-btns .small{margin-right:6px}
+.quick-btns .btn-sm{padding:10px 16px;font-size:12px}
+
+@media (max-width:760px){
+  .ver-switch{left:12px;bottom:16px}
+  .ver-switch button{padding:8px 11px;font-size:11px}
+  .search-band{padding:24px 0 0}
+  .plan2-name{font-size:18px}
+  .plan2-gb,.plan2-price{font-size:16px}
+  .plan-photo{min-height:250px}
+  .v2 .hero .quick-btns{flex-wrap:wrap;overflow:visible;margin-inline:0;padding-inline:0;justify-content:center;gap:8px!important;font-size:inherit}
+  .v2 .hero .quick-btns .small{flex-basis:100%;text-align:center;margin:0;font-size:12px}
+  .v2 .hero .quick-btns .btn{flex:1;margin:0!important;padding:10px 6px;font-size:11px;letter-spacing:.04em;white-space:nowrap}
+}
+.v2 .home-section>.m-only{margin-top:20px}
+/* v2 card row: name, data and price stay on one line while they fit; otherwise data and price move under the name */
+.plan2-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.plan2-name{flex:1 0 auto;max-width:100%}
+.plan2-gb{flex:none}
+.plan2-price{flex:none;margin-left:auto}
+.plan2-actions .link{white-space:nowrap}
+.plan2-actions .btn{flex:none}
+.plan-photo{min-height:200px}
+.plan2-actions{flex-wrap:wrap}
+.plan2-actions .btn{margin-left:auto}
