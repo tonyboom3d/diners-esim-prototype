@@ -821,6 +821,21 @@ body{min-width:0}
 .plan2-price{display:inline-flex;align-items:baseline;gap:8px}
 .plan2-price s{display:inline;margin:0;font-size:16px}
 @media (max-width:760px){.plan2-price s{font-size:15px}}
+/* version 2: popular regions under the search, always on one line */
+.band-quick{flex-wrap:nowrap;margin-top:4px}
+.band-quick>*{flex:none;white-space:nowrap}
+.band-quick .small{color:var(--muted);margin-right:4px}
+@media (max-width:760px){
+  .band-quick{font-size:min(12.5px,3vw);gap:.5em;overflow-x:auto;scrollbar-width:none}
+  .band-quick::-webkit-scrollbar{display:none}
+  .band-quick .small{font-size:1em}
+  .band-quick .chip{padding:.5em .75em;font-size:1em}
+}
+@media (max-width:760px){
+  .band-quick{font-size:min(11.5px,2.7vw);gap:.45em;margin-inline:calc(var(--pad)*-1);padding-inline:8px;justify-content:center}
+  .band-quick .small{margin-right:0}
+  .band-quick .chip{padding:.5em .68em}
+}
 
 </style>
 </head>
@@ -1321,14 +1336,14 @@ V[""] = () => {
       <div class="stack"><h1>Stay connected wherever you travel</h1>
       <p class="big measure">Prepaid travel data for Diners Club cardmembers. Choose a destination, pay with your Diners Club card and install your eSIM by scanning a QR code.</p></div>
       ${v2 ? "" : searchBar()}
-      <div class="quick"><span class="small">Popular regions</span>${REGIONS.map(r => `<a class="chip" ${go_("/plans?region=" + r.key)}>${r.label}</a>`).join("")}</div>
+      ${v2 ? "" : `<div class="quick"><span class="small">Popular regions</span>${REGIONS.map(r => `<a class="chip" ${go_("/plans?region=" + r.key)}>${r.label}</a>`).join("")}</div>`}
       ${v2 ? `<div class="quick quick-btns"><span class="small">Already have an eSIM?</span><a class="btn btn-secondary btn-sm" ${go_("/balance")}>Check balance</a><a class="btn btn-secondary btn-sm" ${go_("/topup")}>Top up</a><a class="btn btn-secondary btn-sm" ${go_("/devices")}>Check your device</a></div>`
       : `<div class="quick" style="gap:24px"><span class="small">Already have an eSIM?</span><a class="link" ${go_("/balance")}>Check balance ${I.arrow}</a><a class="link" ${go_("/topup")}>Top up ${I.arrow}</a><a class="link" ${go_("/devices")}>Check your device ${I.arrow}</a></div>`}
     </div>
     <div></div>
   </div></section>
   <div class="notice"><span>Travelling often? 1-year plans are now available.</span><a class="link" ${go_("/plans?validity=365")}>See 1-year plans ${I.arrow}</a></div>
-  ${v2 ? `<section class="search-band"><div class="wrap"><div class="search-band-in"><p class="strong">Find a plan for your trip</p>${searchBar()}</div></div></section>` : ""}
+  ${v2 ? `<section class="search-band"><div class="wrap"><div class="search-band-in"><p class="strong">Find a plan for your trip</p>${searchBar()}<div class="quick band-quick"><span class="small">Popular regions</span>${REGIONS.map(r => `<a class="chip chip-light" ${go_("/plans?region=" + r.key)}>${r.label}</a>`).join("")}</div></div></div></section>` : ""}
   <div class="wrap">${SECTIONS.slice(0, 2).map(sec).join("")}</div>
   ${coverage()}
   <div class="wrap">${SECTIONS.slice(2).map((s, i) => sec(s, i + 2)).join("")}</div>

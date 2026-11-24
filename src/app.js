@@ -286,14 +286,14 @@ V[""] = () => {
       <div class="stack"><h1>Stay connected wherever you travel</h1>
       <p class="big measure">Prepaid travel data for Diners Club cardmembers. Choose a destination, pay with your Diners Club card and install your eSIM by scanning a QR code.</p></div>
       ${v2 ? "" : searchBar()}
-      <div class="quick"><span class="small">Popular regions</span>${REGIONS.map(r => `<a class="chip" ${go_("/plans?region=" + r.key)}>${r.label}</a>`).join("")}</div>
+      ${v2 ? "" : `<div class="quick"><span class="small">Popular regions</span>${REGIONS.map(r => `<a class="chip" ${go_("/plans?region=" + r.key)}>${r.label}</a>`).join("")}</div>`}
       ${v2 ? `<div class="quick quick-btns"><span class="small">Already have an eSIM?</span><a class="btn btn-secondary btn-sm" ${go_("/balance")}>Check balance</a><a class="btn btn-secondary btn-sm" ${go_("/topup")}>Top up</a><a class="btn btn-secondary btn-sm" ${go_("/devices")}>Check your device</a></div>`
       : `<div class="quick" style="gap:24px"><span class="small">Already have an eSIM?</span><a class="link" ${go_("/balance")}>Check balance ${I.arrow}</a><a class="link" ${go_("/topup")}>Top up ${I.arrow}</a><a class="link" ${go_("/devices")}>Check your device ${I.arrow}</a></div>`}
     </div>
     <div></div>
   </div></section>
   <div class="notice"><span>Travelling often? 1-year plans are now available.</span><a class="link" ${go_("/plans?validity=365")}>See 1-year plans ${I.arrow}</a></div>
-  ${v2 ? `<section class="search-band"><div class="wrap"><div class="search-band-in"><p class="strong">Find a plan for your trip</p>${searchBar()}</div></div></section>` : ""}
+  ${v2 ? `<section class="search-band"><div class="wrap"><div class="search-band-in"><p class="strong">Find a plan for your trip</p>${searchBar()}<div class="quick band-quick"><span class="small">Popular regions</span>${REGIONS.map(r => `<a class="chip chip-light" ${go_("/plans?region=" + r.key)}>${r.label}</a>`).join("")}</div></div></div></section>` : ""}
   <div class="wrap">${SECTIONS.slice(0, 2).map(sec).join("")}</div>
   ${coverage()}
   <div class="wrap">${SECTIONS.slice(2).map((s, i) => sec(s, i + 2)).join("")}</div>
