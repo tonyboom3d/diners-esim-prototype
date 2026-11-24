@@ -806,3 +806,5 @@ body{min-width:0}
 .plan2-gb,.plan2-price{font:700 24px/1.15 var(--sans)}
 .plan2-price s{font-weight:400}
 @media (max-width:760px){.plan2-name,.plan2-gb,.plan2-price{font-size:22px}}
+/* no background behind the data amount */
+.plan2-gb,.plan-photo .plan2-gb{background:none;padding:0;backdrop-filter:none}
