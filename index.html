@@ -817,6 +817,10 @@ body{min-width:0}
 @media (max-width:760px){.plan2-name,.plan2-gb,.plan2-price{font-size:22px}}
 /* no background behind the data amount */
 .plan2-gb,.plan-photo .plan2-gb{background:none;padding:0;backdrop-filter:none}
+/* original price to the left of the sale price, on the same line */
+.plan2-price{display:inline-flex;align-items:baseline;gap:8px}
+.plan2-price s{display:inline;margin:0;font-size:16px}
+@media (max-width:760px){.plan2-price s{font-size:15px}}
 
 </style>
 </head>
