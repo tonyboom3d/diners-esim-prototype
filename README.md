@@ -28,7 +28,7 @@ Home, plan list with filters and multi-country search, plan details, checkout (d
 | `src/data.js` | Sample catalog in the CMS field structure (plans, countries, top-ups, orders, devices, FAQs) |
 | `src/styles.css` | Styles, based on the DCI Website Guidelines |
 | `src/map.js` | World map outline for the coverage section |
-| `src/flags/`, `src/fonts/`, `src/photos/`, `src/cards/` | Assets embedded at build time (`cards/us.jpg`, when added, is the photo on the version 2 USA card) |
+| `src/flags/`, `src/fonts/`, `src/photos/`, `src/cards/` | Assets embedded at build time (`cards/us.jpg` is the photo on the version 2 USA card) |
 
 ## Build
 

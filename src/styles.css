@@ -737,7 +737,7 @@ body{min-width:0}
 
 /* featured card: destination photo with a fade under the details */
 .plan-photo{border:0;background:var(--twilight);min-height:230px}
-.plan-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%}
+.plan-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:42% 30%}
 .plan-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,30,66,0) 0%,rgba(4,30,66,.2) 22%,rgba(4,30,66,.82) 50%,rgba(4,30,66,.95) 70%,var(--twilight) 100%)}
 .plan-photo .plan2-body{justify-content:flex-end;color:var(--white)}
 .plan-photo .plan2-row{margin-top:auto}
@@ -796,3 +796,7 @@ body{min-width:0}
   .plan2-gb{font-size:19px}
   .plan2-price{font-size:20px}
 }
+/* lighter fade so the photo shows, darker only behind the details */
+.plan-photo::after{background:linear-gradient(180deg,rgba(4,30,66,0) 0%,rgba(4,30,66,.05) 30%,rgba(4,30,66,.55) 55%,rgba(4,30,66,.88) 78%,var(--twilight) 100%)}
+.plan-photo .plan2-row,.plan-photo .plan2-meta{text-shadow:0 1px 6px rgba(4,30,66,.55)}
+.plan-photo .plan2-gb{background:rgba(4,30,66,.45);backdrop-filter:blur(4px)}
