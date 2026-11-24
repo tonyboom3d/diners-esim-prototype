@@ -101,6 +101,9 @@ function searchSubmit(box) {
 }
 /* Version 2 card: name, data and price on one line; Countries & info left, Buy now right under the price.
    photo=true puts the destination photo behind the card with a fade under the details. */
+/* Version 2 cards use short destination names */
+const SHORT_NAMES = { "United Kingdom": "UK", "United Arab Emirates": "UAE", "United States": "USA", "USA, Canada & Mexico": "USA, CA & MX", "Dominican Republic": "Dominican Rep.", "Czech Republic": "Czechia", "South Korea": "S. Korea" };
+const shortName = t => SHORT_NAMES[t] || t;
 function planCard2(p, photo) {
   const cover = p.countries.length === 1 ? `${COUNTRIES[p.countries[0]][2]} network` : `${p.countries.length} countries`;
   const img = photo && CARD_PHOTOS[p.icon];
@@ -108,7 +111,7 @@ function planCard2(p, photo) {
     <div class="plan2-body${photo ? " on-dark" : ""}">
       <div class="plan2-top">${flag(p.icon, 32)}<span class="plan-tags">${p.onSale ? '<span class="tag tag-sale">On sale</span>' : ""}${p.popular ? '<span class="tag tag-line">Popular</span>' : ""}</span></div>
       <div class="plan2-row">
-        <h3 class="plan2-name"><a ${go_("/plan/" + p.id)}>${esc(p.title)}</a></h3>
+        <h3 class="plan2-name"><a ${go_("/plan/" + p.id)} title="${esc(p.title)}">${esc(shortName(p.title))}</a></h3>
         <span class="plan2-gb">${p.dataGB} GB</span>
         <span class="plan2-price">${p.compareAt ? `<s>$${p.compareAt}</s>` : ""}$${p.price}</span>
       </div>
