@@ -124,16 +124,17 @@ function planCard2(p, photo) {
 /* Version 3 card: flag and name left, large data amount in the centre, price and Buy now right */
 function planCard3(p) {
   const more = p.countries.length === 1 ? "/plans?country=" + p.countries[0] : "/plans?region=" + p.region;
-  const others = PLANS.filter(x => x.live && x.title === p.title && x.id !== p.id).length;
   const tag = p.onSale ? '<span class="tag tag-sale">On sale</span>' : p.popular ? '<span class="tag tag-grey">Popular</span>' : "";
+  /* two rows: identity, data amount, price and Buy now; then days and top-up, Countries & info, More plans on one line */
   return `<article class="plan plan3">
-    <div class="p3-left">${flag(p.icon, 52)}<h3 class="p3-name"><a ${go_("/plan/" + p.id)} title="${esc(p.title)}">${esc(shortName(p.title))}</a></h3>
-      <p class="p3-sub"><span>${validity(p.days)}</span>${p.topup ? '<span class="p3-topup">Top-up</span>' : ""}</p></div>
-    <div class="p3-mid"><p class="p3-gb"><b>${p.dataGB}</b><span>GB</span></p><a class="link link-sm" ${go_("/plan/" + p.id)}>Countries &amp; info</a></div>
-    <div class="p3-right"><div class="p3-tag">${tag}</div>
-      <p class="p3-price"><span class="p3-pre"><span class="p3-from">from</span>${p.compareAt ? `<s>$${p.compareAt}</s>` : ""}</span><span class="p3-now"><b>${p.price}</b><span class="p3-cur">$</span></span></p>
-      <a class="btn btn-primary btn-sm btn-block" ${go_("/checkout/" + p.id)}>Buy now</a>
-      <a class="link link-sm" ${go_(more)}>More plans</a></div>
+    <div class="p3-id">${flag(p.icon, 52)}<h3 class="p3-name"><a ${go_("/plan/" + p.id)} title="${esc(p.title)}">${esc(shortName(p.title))}</a></h3></div>
+    <p class="p3-gb"><b>${p.dataGB}</b><span>GB</span></p>
+    <div class="p3-buy"><div class="p3-tag">${tag}</div>
+      <p class="p3-price"><span class="p3-from">from</span><b>${p.price}</b><span class="p3-cur">$</span></p>
+      <a class="btn btn-primary btn-sm" ${go_("/checkout/" + p.id)}>Buy now</a></div>
+    <p class="p3-sub"><span>${validity(p.days)}</span>${p.topup ? '<span class="p3-topup">Top-up</span>' : ""}</p>
+    <a class="link link-sm p3-info" ${go_("/plan/" + p.id)}>Countries &amp; info</a>
+    <a class="link link-sm p3-more" ${go_(more)}>More plans</a>
   </article>`;
 }
 function planCard(p, photo) {

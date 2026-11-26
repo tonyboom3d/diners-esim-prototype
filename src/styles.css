@@ -890,3 +890,29 @@ body{min-width:0}
   .p3-topup{padding-left:8px}
 }
 .p3-right .link{align-self:flex-end}
+/* V3 round 3: second row aligns days / top-up, Countries & info and More plans */
+.plan3{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);grid-template-areas:"id gb buy" "sub info more";row-gap:14px;align-items:center}
+.p3-id{grid-area:id;display:flex;flex-direction:column;align-items:flex-start;gap:8px;align-self:start}
+.p3-gb{grid-area:gb;justify-self:center}
+.p3-buy{grid-area:buy;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.p3-buy .btn{padding:10px 22px}
+.p3-price{flex-direction:row!important;align-items:baseline!important;gap:4px}
+.p3-from{margin-right:2px}
+.p3-sub{grid-area:sub;margin:0}
+.p3-info{grid-area:info;justify-self:center}
+.p3-more{grid-area:more;justify-self:end}
+@media (max-width:760px){
+  .plan3{row-gap:12px}
+  .p3-buy .btn{padding:9px 14px}
+  .p3-price b{font-size:32px}
+  .p3-sub{flex-direction:column;align-items:flex-start;gap:2px}
+  .p3-topup{padding-left:0;border-left:0}
+  .p3-info{text-align:center}
+}
+.p3-buy .btn{white-space:nowrap}
+@media (max-width:760px){
+  .p3-sub{flex-direction:row;align-items:center;gap:6px;font-size:12px}
+  .p3-topup{padding-left:6px;border-left:1px solid var(--line-strong)}
+  .p3-info,.p3-more{white-space:nowrap;font-size:12px}
+  .plan3{column-gap:8px;padding:16px 12px}
+}
