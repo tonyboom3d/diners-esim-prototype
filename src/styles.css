@@ -827,3 +827,55 @@ body{min-width:0}
   .band-quick .small{margin-right:0}
   .band-quick .chip{padding:.5em .68em}
 }
+
+/* =====================================================================
+   Version 3: horizontal plan card
+   ===================================================================== */
+.ver-switch button{padding:9px 13px}
+.v3 .grid-4,.v3 .grid-auto:has(.plan3){grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:1600px){.v3 .grid-4{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.plan3{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:16px;padding:20px 22px;align-items:stretch}
+.p3-left{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0}
+.p3-name{margin:0;font:700 24px/1.15 var(--sans)}
+.p3-name a{color:inherit;text-decoration:none}
+.p3-name a:hover{text-decoration:underline;text-underline-offset:3px}
+.p3-sub{margin:auto 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;font-size:15px}
+.p3-topup{display:inline-flex;align-items:center;gap:6px}
+.p3-topup i{display:grid;place-items:center;width:18px;height:18px;border:1.5px solid var(--twilight);border-radius:3px}
+.p3-topup svg{width:12px;height:12px}
+.p3-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center}
+.p3-gb{margin:0;display:flex;align-items:baseline;gap:4px;color:var(--twilight);line-height:.85}
+.p3-gb b{font:400 76px/.85 var(--sans);letter-spacing:-.02em}
+.p3-gb span{font:400 26px/1 var(--sans)}
+.p3-right{display:flex;flex-direction:column;align-items:stretch;gap:8px;text-align:center}
+.p3-tag{min-height:26px;display:flex;justify-content:flex-end}
+.tag-grey{background:var(--sand);border:1px solid var(--line)}
+.p3-price{margin:0;display:flex;align-items:baseline;justify-content:flex-end;gap:4px;line-height:1}
+.p3-from{font-size:16px;color:var(--muted);margin-right:4px}
+.p3-price s{font-size:15px;color:var(--muted);margin-right:4px}
+.p3-price b{font:400 44px/1 var(--sans)}
+.p3-cur{font-size:22px}
+.p3-right .btn{margin-top:2px}
+.p3-right .link{align-self:center}
+@media (max-width:760px){
+  .v3 .grid-4,.v3 .grid-auto:has(.plan3){grid-template-columns:minmax(0,1fr)}
+  .plan3{gap:10px;padding:16px 14px}
+  .p3-name{font-size:20px}
+  .p3-sub{font-size:13px;gap:4px 10px}
+  .p3-gb b{font-size:60px}
+  .p3-gb span{font-size:21px}
+  .p3-price b{font-size:36px}
+  .p3-from{font-size:13px}
+  .p3-right .btn{padding:10px 6px}
+  .p3-right .link,.p3-mid .link{font-size:13px}
+}
+.p3-pre{display:inline-flex;align-items:baseline;gap:4px}
+.p3-now{display:inline-flex;align-items:baseline;gap:2px}
+@media (max-width:760px){
+  .plan3{grid-template-columns:minmax(0,.95fr) minmax(0,.95fr) minmax(0,1.1fr)}
+  .p3-gb b{font-size:52px}
+  .p3-gb span{font-size:18px}
+  .p3-price{flex-direction:column;align-items:flex-end;gap:2px}
+  .p3-price b{font-size:34px}
+  .p3-price s{margin-right:0}
+}

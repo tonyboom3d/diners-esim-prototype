@@ -12,9 +12,10 @@ Open `index.html` in a browser, or enable GitHub Pages for this repository (Sett
 
 ## Versions
 
-The page has two design versions, switched with the Version 1 / Version 2 control at the bottom left. Open `?v=2` to start on version 2.
+The page has three design versions, switched with the V1 / V2 / V3 control at the bottom left. Open `?v=2` or `?v=3` to start on a version.
 
-Version 2 changes the home page and plan cards: compact cards (name, data and price on one line), a photo card for the USA at the start of the first section, the search under the notice strip, buttons for the "Already have an eSIM?" links, and on mobile all cards listed without a carousel.
+- **V2** changes the home page and plan cards: compact cards (name, data and price on one line), a photo card for the USA at the start of the first section, the search and popular regions under the notice strip, buttons for the "Already have an eSIM?" links, and on mobile all cards listed without a carousel.
+- **V3** keeps the V2 page layout with a horizontal plan card: flag, name, validity and top-up on the left, a large data amount in the centre, tag, price, Buy now and More plans on the right.
 
 ## Pages
 

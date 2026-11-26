@@ -64,8 +64,10 @@ function qr(seed) {
 
 /* ---------- State ---------- */
 const S = { user: null, orders: SEED_ORDERS.map(o => ({ ...o })), qty: 1, co: null, justPaid: null, chat: false, chatStage: "intro", howTab: "iphone", devBrand: "All", seg: "", esim: {}, howStep: 0, howAuto: true, heroIdx: 0, menu: false, ver: 1 };
-try { const v = new URLSearchParams(location.search).get("v") || localStorage.getItem("esim-ver"); S.ver = v === "2" ? 2 : 1; } catch (e) {}
-const V2 = () => S.ver === 2;
+try { const v = new URLSearchParams(location.search).get("v") || localStorage.getItem("esim-ver"); S.ver = v === "3" ? 3 : v === "2" ? 2 : 1; } catch (e) {}
+/* versions 2 and 3 share the page layout; version 3 changes the plan card */
+const V2 = () => S.ver >= 2;
+const V3 = () => S.ver === 3;
 /* Version 2: destination of the photo card at the start of the first home section */
 const FEATURED = "US";
 const REDUCED = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -119,7 +121,23 @@ function planCard2(p, photo) {
       <div class="plan2-actions"><a class="link link-sm" ${go_("/plan/" + p.id)}>Countries &amp; info</a><a class="btn btn-primary btn-sm" ${go_("/checkout/" + p.id)}>Buy now</a></div>
     </div></article>`;
 }
+/* Version 3 card: flag and name left, large data amount in the centre, price and Buy now right */
+function planCard3(p) {
+  const more = p.countries.length === 1 ? "/plans?country=" + p.countries[0] : "/plans?region=" + p.region;
+  const others = PLANS.filter(x => x.live && x.title === p.title && x.id !== p.id).length;
+  const tag = p.onSale ? '<span class="tag tag-sale">On sale</span>' : p.popular ? '<span class="tag tag-grey">Popular</span>' : "";
+  return `<article class="plan plan3">
+    <div class="p3-left">${flag(p.icon, 52)}<h3 class="p3-name"><a ${go_("/plan/" + p.id)} title="${esc(p.title)}">${esc(shortName(p.title))}</a></h3>
+      <p class="p3-sub"><span>${validity(p.days)}</span>${p.topup ? `<span class="p3-topup"><i aria-hidden="true">${I.check}</i>Top-up</span>` : ""}</p></div>
+    <div class="p3-mid"><p class="p3-gb"><b>${p.dataGB}</b><span>GB</span></p><a class="link link-sm" ${go_("/plan/" + p.id)}>Countries &amp; info</a></div>
+    <div class="p3-right"><div class="p3-tag">${tag}</div>
+      <p class="p3-price">${others || p.compareAt ? `<span class="p3-pre">${others ? '<span class="p3-from">from</span>' : ""}${p.compareAt ? `<s>$${p.compareAt}</s>` : ""}</span>` : ""}<span class="p3-now"><b>${p.price}</b><span class="p3-cur">$</span></span></p>
+      <a class="btn btn-primary btn-sm btn-block" ${go_("/checkout/" + p.id)}>Buy now</a>
+      <a class="link link-sm" ${go_(more)}>More plans</a></div>
+  </article>`;
+}
 function planCard(p, photo) {
+  if (V3()) return planCard3(p);
   if (V2()) return planCard2(p, photo === true);
   const cover = p.countries.length === 1 ? `<li>${I.signal}${COUNTRIES[p.countries[0]][2]} network</li>` : `<li>${I.globe}${p.countries.length} countries</li>`;
   return `<article class="plan">
@@ -814,15 +832,16 @@ setInterval(() => { const imgs = $$(".hero-media img"); if (REDUCED || document.
 
 function renderVer() {
   document.documentElement.classList.toggle("v2", V2());
+  document.documentElement.classList.toggle("v3", V3());
   let el = $("#ver-switch");
   if (!el) { el = document.createElement("div"); el.id = "ver-switch"; el.className = "ver-switch"; el.setAttribute("role", "group"); el.setAttribute("aria-label", "Design version"); document.body.appendChild(el); }
-  el.innerHTML = [1, 2].map(n => `<button type="button" data-act="setVer" data-v="${n}" aria-pressed="${S.ver === n}">Version ${n}</button>`).join("");
+  el.innerHTML = [1, 2, 3].map(n => `<button type="button" data-act="setVer" data-v="${n}" aria-pressed="${S.ver === n}" aria-label="Version ${n}">V${n}</button>`).join("");
 }
 A.setVer = el => {
   const n = +el.dataset.v; if (n === S.ver) return;
   S.ver = n; const y = window.scrollY;
   try { localStorage.setItem("esim-ver", String(n)); } catch (e) {}
-  try { const u = new URL(location.href); if (n === 2) u.searchParams.set("v", "2"); else u.searchParams.delete("v"); history.replaceState(null, "", u.pathname + u.search + u.hash); } catch (e) {}
+  try { const u = new URL(location.href); if (n > 1) u.searchParams.set("v", String(n)); else u.searchParams.delete("v"); history.replaceState(null, "", u.pathname + u.search + u.hash); } catch (e) {}
   renderVer(); render(cur); window.scrollTo(0, y);
 };
 
