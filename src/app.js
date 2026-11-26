@@ -128,10 +128,10 @@ function planCard3(p) {
   const tag = p.onSale ? '<span class="tag tag-sale">On sale</span>' : p.popular ? '<span class="tag tag-grey">Popular</span>' : "";
   return `<article class="plan plan3">
     <div class="p3-left">${flag(p.icon, 52)}<h3 class="p3-name"><a ${go_("/plan/" + p.id)} title="${esc(p.title)}">${esc(shortName(p.title))}</a></h3>
-      <p class="p3-sub"><span>${validity(p.days)}</span>${p.topup ? `<span class="p3-topup"><i aria-hidden="true">${I.check}</i>Top-up</span>` : ""}</p></div>
+      <p class="p3-sub"><span>${validity(p.days)}</span>${p.topup ? '<span class="p3-topup">Top-up</span>' : ""}</p></div>
     <div class="p3-mid"><p class="p3-gb"><b>${p.dataGB}</b><span>GB</span></p><a class="link link-sm" ${go_("/plan/" + p.id)}>Countries &amp; info</a></div>
     <div class="p3-right"><div class="p3-tag">${tag}</div>
-      <p class="p3-price">${others || p.compareAt ? `<span class="p3-pre">${others ? '<span class="p3-from">from</span>' : ""}${p.compareAt ? `<s>$${p.compareAt}</s>` : ""}</span>` : ""}<span class="p3-now"><b>${p.price}</b><span class="p3-cur">$</span></span></p>
+      <p class="p3-price"><span class="p3-pre"><span class="p3-from">from</span>${p.compareAt ? `<s>$${p.compareAt}</s>` : ""}</span><span class="p3-now"><b>${p.price}</b><span class="p3-cur">$</span></span></p>
       <a class="btn btn-primary btn-sm btn-block" ${go_("/checkout/" + p.id)}>Buy now</a>
       <a class="link link-sm" ${go_(more)}>More plans</a></div>
   </article>`;

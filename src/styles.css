@@ -879,3 +879,14 @@ body{min-width:0}
   .p3-price b{font-size:34px}
   .p3-price s{margin-right:0}
 }
+/* V3 round 2: light grey "from", narrower Buy now, days and top-up on one line */
+.p3-from{color:#9AA3B2}
+.p3-right .btn-block{width:auto;align-self:flex-end;padding:10px 22px}
+.p3-sub{flex-wrap:nowrap;white-space:nowrap;gap:12px}
+.p3-topup{padding-left:12px;border-left:1px solid var(--line-strong)}
+@media (max-width:760px){
+  .p3-right .btn-block{padding:9px 14px}
+  .p3-sub{gap:8px}
+  .p3-topup{padding-left:8px}
+}
+.p3-right .link{align-self:flex-end}
